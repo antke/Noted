@@ -10,7 +10,11 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('/', 'NotesMainController@index');
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::post('/add_note', 'NotesMainController@addNote');
+
+Route::get('/delete/{id}', 'NotesMainController@deleteRecord')->name('delete.record');
+
+Route::get('/edit_note/{id}', 'NotesMainController@editNote')->name('edit.record');
+Route::post('/update_note/{id}', 'NotesMainController@updateNote')->name('update.record');
