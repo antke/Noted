@@ -13,6 +13,7 @@
 Route::get('/', 'NotesMainController@index');
 
 Route::post('/add_note', 'NotesMainController@addNote');
+Route::post('/add_list', 'NotesMainController@addList');
 
 Route::get('/delete/{id}', 'NotesMainController@deleteRecord')->name('delete.record');
 

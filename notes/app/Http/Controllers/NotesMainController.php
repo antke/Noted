@@ -14,27 +14,26 @@ class NotesMainController extends Controller
 {
     public function index()
     {
-      $notesData = $this->getNotes();
+      $entriesData = $this->getEntries();
 
-      return view('home', ['notes' => $notesData]);
+      return view('home', ['entries' => $entriesData]);
     }
 
-    private function getNotes()
+    private function getEntries()
     {
-      $notesData = ListObject::all()->toArray();
+      $entriesData = NoteObject::all()->toArray();
 
-      // foreach ($notesData as $index => $data) {
-      //   dd($data);
-      //   exit;
-      // }
+      foreach ($entriesData as $index => $entry) {
+        if ($entry['data_type'] === "list") {
+          $entriesData[$index]['content'] = json_decode($entry['content']);
+        }
+      }
 
-      return $notesData;
+      return $entriesData;
     }
 
     public function addNote()
     {
-      var_dump(request('title'));
-
       $note = new NoteObject;
 
       $note->title = request('title');
@@ -44,10 +43,33 @@ class NotesMainController extends Controller
       $note->save();
 
       return redirect()->to('/');
-
     }
 
-    public function deleteRecord($id) {
+    public function addList()
+    {
+        $list = new ListObject;
+
+        $list->title = request('title');
+
+        $todoList = [];
+        $numberOfIterations = request('todo_item_count') + 1;
+        for ($i = 1; $i < $numberOfIterations; $i++) {
+          $todoList[] = [
+            "entry" => request("todo_item_$i"),
+            "checked" => 0
+          ];
+        }
+
+        $list->content = json_encode($todoList);
+
+        $list->data_type = "list";
+        $list->save();
+
+        return redirect()->to('/');
+    }
+
+    public function deleteRecord($id)
+    {
       $recordToDelete = NoteObject::find($id);
       $recordToDelete->delete();
 

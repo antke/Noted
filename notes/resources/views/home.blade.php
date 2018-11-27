@@ -1,37 +1,67 @@
-<h1>Notes</h1>
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Noted</title>
 
-<button id="add_note" type="button" name="note_button">Add a new note</button>
+    <script
+		  src="https://code.jquery.com/jquery-3.3.1.min.js"
+		  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+		  crossorigin="anonymous">
+    </script>
 
-<button id="add_list" type="button" name="list_button">Add a new to do list</button>
+    <link rel="stylesheet" href="{{asset('/css/app.css')}}">
+    <link rel="stylesheet" href="{{asset('/css/stylesheet.css')}}">
 
-<div class="add_note_modal">
+  </head>
+  <body>
 
-  <form class="note_form" action="/add_note" method="post" enctype="multipart/form-data">
-    {{ csrf_field() }}
+<div class="wrapper">
 
-    <label for="title">Title</label>
-    <input type="text" name="title" value="">
+<!-- <button id="add_note" type="button" name="note_button">Add a new note</button>
 
-    <label for="content">Content</label>
-    <input type="textarea" name="content" value="">
+<button id="add_list" type="button" name="list_button">Add a new to do list</button> -->
 
-    <button type="submit" name="note_submit_button">Submit</button>
-  </form>
-
+<div class="entry_control">
+  @include('add_note')
+  @include('add_list')
 </div>
 
-<br>
+<div class="entry_container">
+  @foreach ($entries as $key => $entry)
+    @if ($entry['data_type'] === "note")
+      @include('note', $entry)
+    @else
+      @include('list', $entry)
+    @endif
+  @endforeach
+</div>
 
-<?php foreach ($notes as $key => $note): ?>
+</div>
+</body>
 
-  <div class="note">
-    <span>{{$note['title']}}</span>
-    <span>{{$note['created_at']}}</span>
-    <p>{{$note['content']}}</p>
+<script type="text/javascript">
+  jQuery(document).ready(function() {
 
-    <a href="{{route('delete.record', $note['id'])}}">Delete this note</a>
-    <a href="{{route('edit.record', $note['id'])}}">Edit this note</a>
-  </div>
+    $('#add_todo_item').click(function() {
+      var newItemCount = $('#new_todo_list li').length + 1;
 
-  <br><br><br>
-<?php endforeach; ?>
+      $('#new_todo_list').append('<li>\
+        <input class="todo_item" type="text" name="todo_item_' + newItemCount + '">\
+      </li>');
+
+      $('#todo_item_count').val(newItemCount);
+    })
+
+    $('#remove_todo_item').click(function() {
+      if($('#todo_item_count').val() > 1) {
+        $('#new_todo_list li').last().remove();
+
+        $('#todo_item_count').val($('#new_todo_list li').length);
+      }
+    })
+
+  });
+</script>
+
+</html>
