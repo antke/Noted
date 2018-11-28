@@ -24,6 +24,8 @@ class NotesMainController extends Controller
 
   /**
   * Return all entries to be displayed on the main page
+  *
+  * @return $entriesData
   */
   private function getEntries()
   {
@@ -46,7 +48,7 @@ class NotesMainController extends Controller
     $note = new NoteObject;
 
     $note->title = request('title');
-    $note->content = request('content');
+    $note->content = $this->sanitizeData(request('content'));
 
     $note->data_type = "note";
     $note->save();
@@ -127,5 +129,20 @@ class NotesMainController extends Controller
     $post->update(array('content' => $content));
 
     return redirect()->to('/');
+  }
+
+  /**
+  * Sanitize input data
+  *
+  * @return $string
+  */
+  private function sanitizeData($string)
+  {
+    $string = trim($string);
+    $string = htmlspecialchars($string);
+    $string = htmlentities($string);
+    $string = strip_tags($string);
+
+    return $string;
   }
 }

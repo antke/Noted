@@ -4,7 +4,7 @@ jQuery(document).ready(function() {
     var newItemCount = $('#new_todo_list li').length + 1;
 
     $('#new_todo_list').append('<li>\
-      <input class="todo_item" type="text" name="todo_item_' + newItemCount + '">\
+      <input class="todo_item" type="text" name="todo_item_' + newItemCount + '" required>\
     </li>');
 
     $('#todo_item_count').val(newItemCount);

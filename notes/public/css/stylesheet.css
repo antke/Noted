@@ -28,6 +28,7 @@ input[type=text] {
   border-radius: 5px;
   border: none;
   padding: 12px;
+  font-size: 18px;
 }
 
 input[type=text].display_list_item {
@@ -52,7 +53,7 @@ p {
 }
 
 .entry_control .entry {
-  background-color: #ccff90;
+  background-color: #bee3db;
 }
 
 .entry_container {
@@ -90,6 +91,10 @@ p {
   float: right;
 }
 
+.add_box_title {
+  font-size: 18px;
+}
+
 .add_note_modal,
 .add_list_modal {
   width: auto;
@@ -101,7 +106,7 @@ p {
 }
 
 .list_control_buttons button {
-  font-size: 24px;
+  font-size: 28px;
   border-radius: 100px;
   border: none;
   width: 50px;
@@ -147,4 +152,14 @@ button:active{
   font-size: 18px;
   border-radius: 25px;
   padding: 12px 24px;
+}
+
+@media screen and (max-width: 480px) {
+  .wrapper,
+  .entry_container,
+  .entry_control,
+  .entry {
+    display: block;
+    width: auto;
+  }
 }

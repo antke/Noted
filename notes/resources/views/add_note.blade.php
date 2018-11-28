@@ -3,11 +3,11 @@
   <form class="note_form" action="/add_note" method="post" enctype="multipart/form-data">
     {{ csrf_field() }}
 
-    <p>Title</p>
-    <input type="text" name="title" value=""></input>
+    <p class="add_box_title">Title</p>
+    <input type="text" name="title" value="" required></input>
 
-    <p>Content</p>
-    <textarea type="textarea" name="content"></textarea>
+    <p class="add_box_title">Content</p>
+    <textarea type="textarea" name="content" required></textarea>
 
     <div class="submit_button_wrapper">
       <button class="add_button" type="submit" name="note_submit_button">CREATE</button>

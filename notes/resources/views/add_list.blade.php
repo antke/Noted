@@ -3,13 +3,13 @@
   <form class="list_form" action="/add_list" method="post" enctype="multipart/form-data">
     {{ csrf_field() }}
 
-    <p>Title</p>
-    <input type="text" name="title" value="">
+    <p class="add_box_title">Title</p>
+    <input type="text" name="title" value="" required>
 
-    <p>Tasks</p>
+    <p class="add_box_title">Tasks</p>
     <ul id="new_todo_list" name="new_todo_list">
       <li class="new_todo_item">
-        <input class="todo_item" type="text" name="todo_item_1" placeholder="To do...">
+        <input class="todo_item" type="text" name="todo_item_1" placeholder="To do..." required>
       </li>
     </ul>
     <input id="todo_item_count" type="hidden" name="todo_item_count" value="1">

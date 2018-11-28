@@ -3,7 +3,6 @@
     {{ csrf_field() }}
 
     <div class="note_control_buttons">
-
       <a href="#">
         <button class="edit_button" type="submit" name="button"><img src="{{asset('/images/save_icon.svg')}}" alt=""></button>
       </a>
@@ -18,7 +17,7 @@
     @foreach ($entry['content'] as $key => $todo_item)
       <li>
         <input type="checkbox" name="checkboxes[{{$key}}]" value="{{$key}}" {{($todo_item->checked === 1) ? "checked" : "" }}>
-        <input class="display_list_item" type="text" name="items[]" value="{{$todo_item->entry}}">
+        <input class="display_list_item" type="text" name="items[]" value="{{{$todo_item->entry}}}">
       </li>
     @endforeach
 

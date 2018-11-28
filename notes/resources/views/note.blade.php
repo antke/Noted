@@ -14,6 +14,6 @@
 
     <p class="title">{{$entry['title']}} <span class="date">{{$entry['updated_at']}}</span></p>
 
-    <textarea name="content" rows="3" cols="40">{{$entry['content']}}</textarea>
+    <textarea name="content" rows="3" cols="40">{{{$entry['content']}}}</textarea>
   </form>
 </div>
