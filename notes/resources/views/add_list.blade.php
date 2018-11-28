@@ -1,5 +1,5 @@
 <div class="entry add_list_modal">
-<h3>Add a list</h3>
+<h3>Add a new to do list</h3>
   <form class="list_form" action="/add_list" method="post" enctype="multipart/form-data">
     {{ csrf_field() }}
 
@@ -20,7 +20,7 @@
     </div>
 
     <div class="submit_button_wrapper">
-      <button type="submit" name="note_submit_button">Submit</button>
+      <button class="add_button" type="submit" name="note_submit_button">CREATE</button>
     </div>
   </form>
 

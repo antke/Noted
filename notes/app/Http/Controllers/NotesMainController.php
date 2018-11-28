@@ -12,86 +12,120 @@ use Illuminate\Http\Request;
 
 class NotesMainController extends Controller
 {
-    public function index()
-    {
-      $entriesData = $this->getEntries();
+  /**
+  * Main index
+  */
+  public function index()
+  {
+    $entriesData = $this->getEntries();
 
-      return view('home', ['entries' => $entriesData]);
+    return view('home', ['entries' => $entriesData]);
+  }
+
+  /**
+  * Return all entries to be displayed on the main page
+  */
+  private function getEntries()
+  {
+    $entriesData = NoteObject::all()->toArray();
+
+    foreach ($entriesData as $index => $entry) {
+      if ($entry['data_type'] === "list") {
+        $entriesData[$index]['content'] = json_decode($entry['content']);
+      }
     }
 
-    private function getEntries()
-    {
-      $entriesData = NoteObject::all()->toArray();
+    return $entriesData;
+  }
 
-      foreach ($entriesData as $index => $entry) {
-        if ($entry['data_type'] === "list") {
-          $entriesData[$index]['content'] = json_decode($entry['content']);
-        }
+  /**
+  * Add a new note object
+  */
+  public function addNote()
+  {
+    $note = new NoteObject;
+
+    $note->title = request('title');
+    $note->content = request('content');
+
+    $note->data_type = "note";
+    $note->save();
+
+    return redirect()->to('/');
+  }
+
+  /**
+  * Add a new list object
+  */
+  public function addList()
+  {
+      $list = new ListObject;
+      $list->title = request('title');
+
+      $todoList = [];
+      $numberOfIterations = request('todo_item_count') + 1;
+
+      for ($i = 1; $i < $numberOfIterations; $i++) {
+        $todoList[] = [
+          "entry" => request("todo_item_$i"),
+          "checked" => 0
+        ];
       }
 
-      return $entriesData;
-    }
+      $list->content = json_encode($todoList);
 
-    public function addNote()
-    {
-      $note = new NoteObject;
-
-      $note->title = request('title');
-      $note->content = request('content');
-
-      $note->data_type = "note";
-      $note->save();
+      $list->data_type = "list";
+      $list->save();
 
       return redirect()->to('/');
+  }
+
+  /**
+  * Delete a record
+  */
+  public function deleteRecord($id)
+  {
+    $recordToDelete = NoteObject::find($id);
+    $recordToDelete->delete();
+
+    return redirect()->to('/');
+  }
+
+  /**
+  * Update a note entry
+  */
+  public function updateNote($id, Request $request)
+  {
+    $post = NoteObject::find($id);
+
+    $post->update($request->all());
+
+    return redirect()->to('/');
+  }
+
+  /**
+  * Update a list entry
+  */
+  public function updateList($id, Request $request)
+  {
+    $post = ListObject::find($id);
+
+    $listItems = [];
+    $checkboxes = request('checkboxes');
+
+    foreach (request('items') as $key => $item) {
+      $checked = (isset($checkboxes[$key])) ? 1 : 0;
+
+      $listItems[] = [
+        "entry" => $item,
+        "checked" => $checked
+      ];
     }
 
-    public function addList()
-    {
-        $list = new ListObject;
+    $content = json_encode($listItems);
 
-        $list->title = request('title');
+    $post->update(array('content' => $content));
 
-        $todoList = [];
-        $numberOfIterations = request('todo_item_count') + 1;
-        for ($i = 1; $i < $numberOfIterations; $i++) {
-          $todoList[] = [
-            "entry" => request("todo_item_$i"),
-            "checked" => 0
-          ];
-        }
-
-        $list->content = json_encode($todoList);
-
-        $list->data_type = "list";
-        $list->save();
-
-        return redirect()->to('/');
-    }
-
-    public function deleteRecord($id)
-    {
-      $recordToDelete = NoteObject::find($id);
-      $recordToDelete->delete();
-
-      return redirect()->to('/');
-    }
-
-    public function editNote($id)
-    {
-      $recordToBeUpdated = NoteObject::find($id);
-
-      return view('edit_note', ['note' => $recordToBeUpdated]);
-    }
-
-    public function updateNote($id, Request $request)
-    {
-      $post = NoteObject::find($id);
-
-      // var_dump($request->all());
-
-      $post->update($request->all());
-
-
-      return redirect()->to('/');
-    }
+    return redirect()->to('/');
+  }
 }

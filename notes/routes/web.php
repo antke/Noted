@@ -17,5 +17,5 @@ Route::post('/add_list', 'NotesMainController@addList');
 
 Route::get('/delete/{id}', 'NotesMainController@deleteRecord')->name('delete.record');
 
-Route::get('/edit_note/{id}', 'NotesMainController@editNote')->name('edit.record');
-Route::post('/update_note/{id}', 'NotesMainController@updateNote')->name('update.record');
+Route::post('/update_note/{id}', 'NotesMainController@updateNote')->name('update.note');
+Route::post('/update_list/{id}', 'NotesMainController@updateList')->name('update.list');
